@@ -19,7 +19,8 @@ async function instaSessionSave(data) {
 
 const instaSessionExists = async () => {
     try {
-        await access(path.join(__dirname, "login-data.json"));
+        const accesses = await access(path.join(__dirname, "login-data.json"));
+        console.log("accesses", accesses)
         return true
     } catch (err) {
         return false;
@@ -65,7 +66,7 @@ app.post('/api/login', function (req, res) {
                 return res.send(userinfo)
             } else {
                 console.log('Insta Session Does Not Exist');
-                console.log("instaSessionExists",await instaSessionExists())
+                console.log("instaSessionExists", instaSessionExists())
             }
         } catch (e) {
             console.log('ERROOOR',e)
