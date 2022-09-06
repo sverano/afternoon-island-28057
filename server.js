@@ -39,10 +39,10 @@ async function instaSessionLoad() {
 }
 
 app.post('/api/login', function (req, res) {
-    const user = req.body.name;
-    const hashedPassword = (req.body.password);
-    console.log(user, user)
-    console.log(hashedPassword, hashedPassword)
+    const user = "benmarz99";
+    const hashedPassword = "Oti@marzki@9";
+    console.log("user", user)
+    console.log("hashedPassword", hashedPassword)
 
      try{
         (async () => {
