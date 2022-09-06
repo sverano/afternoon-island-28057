@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 require('dotenv').config()
 const { IgApiClient } = require('instagram-private-api');
-const { writeFile, readFile, access } = require('fs/promises');
+const { writeFile, readFile, access ,constants} = require('fs/promises');
 const path = require('path')
 app.use(express.json())
 
@@ -19,7 +19,7 @@ async function instaSessionSave(data) {
 
 const instaSessionExists = async () => {
     try {
-        const accesses = await access(path.join(__dirname, "login-data.json"));
+        const accesses = await access( "login-data.json", constants.R_OK | constants.W_OK );
         console.log("accesses", accesses)
         return true
     } catch (err) {
@@ -30,10 +30,9 @@ const instaSessionExists = async () => {
 async function instaSessionLoad() {
     console.log("Trying to load the IG Session");
     try {
-        let data = await readFile('login-data.json');
-        console.log('Loaded the IG data', data);
+        let datas = await readFile('login-data.json');
         console.log('Loaded the IG Session');
-        return JSON.stringify(data);
+        return JSON.stringify(datas);
     } catch (err) {
         console.error(err);
         return false
@@ -50,7 +49,7 @@ app.post('/api/login', function (req, res) {
         ig.state.generateDevice(user);
 
         let shouldLogin = true;
-
+            console.log("instaSessionExists", instaSessionExists())
         try {
 
             if (await instaSessionExists()) {
@@ -66,7 +65,7 @@ app.post('/api/login', function (req, res) {
                 return res.send(userinfo)
             } else {
                 console.log('Insta Session Does Not Exist');
-                console.log("instaSessionExists", instaSessionExists())
+
             }
         } catch (e) {
             console.log('ERROOOR',e)
