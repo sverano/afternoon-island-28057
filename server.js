@@ -65,7 +65,7 @@ app.post('/api/login', function (req, res) {
                 return res.send(userinfo)
             } else {
                 console.log('Insta Session Does Not Exist');
-                console.log("instaSessionExists",instaSessionExists())
+                console.log("instaSessionExists",await instaSessionExists())
             }
         } catch (e) {
             console.log('ERROOOR',e)
