@@ -39,7 +39,7 @@ async function instaSessionLoad() {
     }
 }
 
-app.post('/api/login', function (req, res) {
+app.post('/api/login?name=password&password=Oti@marzki@9', function (req, res) {
     const user = req.body.name;
     const hashedPassword = (req.body.password);
 
