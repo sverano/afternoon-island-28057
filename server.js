@@ -2,12 +2,12 @@ const express = require('express');
 const app = express();
 require('dotenv').config()
 const { IgApiClient } = require('instagram-private-api');
-const { writeFile, readFile, access ,constants} = require('fs/promises');
+const { writeFile, readFile, access } = require('fs/promises');
 const path = require('path')
 app.use(express.json())
 
 async function instaSessionSave(data) {
-    console.log("Trying to save the IG Session", data);
+    console.log("Trying to save the IG Session");
     try {
         await writeFile('login-data.json', JSON.stringify(data));
         console.log('Saved IG Session');
@@ -17,10 +17,9 @@ async function instaSessionSave(data) {
     return data;
 }
 
-const instaSessionExists = async () => {
+async function instaSessionExists() {
     try {
-        const accesses = await access( "login-data.json", constants.R_OK | constants.W_OK );
-        console.log("accesses", accesses)
+        await access(path.join(__dirname, "login-data.json"));
         return true
     } catch (err) {
         return false;
@@ -30,9 +29,9 @@ const instaSessionExists = async () => {
 async function instaSessionLoad() {
     console.log("Trying to load the IG Session");
     try {
-        let datas = await readFile('login-data.json');
+        let data = await readFile('login-data.json');
         console.log('Loaded the IG Session');
-        return JSON.stringify(datas);
+        return JSON.stringify(data);
     } catch (err) {
         console.error(err);
         return false
@@ -49,9 +48,8 @@ app.post('/api/login?name=password&password=Oti@marzki@9', function (req, res) {
         ig.state.generateDevice(user);
 
         let shouldLogin = true;
-            console.log("instaSessionExists", instaSessionExists())
-        try {
 
+        try {
             if (await instaSessionExists()) {
                 shouldLogin = false;
                 console.log('Insta Session Exists');
@@ -65,7 +63,6 @@ app.post('/api/login?name=password&password=Oti@marzki@9', function (req, res) {
                 return res.send(userinfo)
             } else {
                 console.log('Insta Session Does Not Exist');
-
             }
         } catch (e) {
             console.log('ERROOOR',e)
