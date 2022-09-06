@@ -19,7 +19,7 @@ async function instaSessionSave(data) {
 
 async function instaSessionExists() {
     try {
-        await access(path.join(__dirname, "login-data.json"));
+        // await access(path.join(__dirname, "login-data.json"));
         return true
     } catch (err) {
         return false;
